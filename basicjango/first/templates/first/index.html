@@ -1,0 +1,26 @@
+{% extends 'first/base.html' %}
+{% load static %}
+{% block content %}
+<!--#자식 html의 block은 부모 html의 block content에 그려지게 된다. 
+    #extends 와 block 에 의하여 사용되지 않는 html 태그
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+-->
+    <p>Hello World!</p>
+    <img src="{% static 'first/image.png' %}" alt="다람쥐"/>
+    <p>{{current_date}}</p>
+    <p>{{current_date|date:"Y년 m월 d일 H시 i분 s초"}}</p>
+    <!-- 방법 1
+    <a href="/select/">시작하기!</a>
+    -->
+    <a href="{% url 'select' %}">시작하기!</a>
+<!-- extends 와 block 에 의하여 사용되지 않는 html 태그
+</body>
+</html>
+-->
+{% endblock %}
