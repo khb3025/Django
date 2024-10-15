@@ -35,15 +35,16 @@ def multipart_upload(request):
         
         ###### upload 방법 2. #####
         # uuid, 확장자 등 처리
-        files_upload(files=multi_files)
-        
+        upload_complete= files_upload(files=multi_files)
+        if upload_complete:
+            context["success"] = True
         return JsonResponse(context)
     
     except Exception as e:
         trace_back = traceback.format_exc()
         print(trace_back)
         context["msg"] = trace_back
-        return JsonResponse(context)
+        return JsonResponse(context,status=500)
 
                   
 def files_upload(files: list,

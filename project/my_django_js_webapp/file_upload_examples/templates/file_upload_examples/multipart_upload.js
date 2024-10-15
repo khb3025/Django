@@ -30,6 +30,7 @@ $(document).ready(function(){
             contentType: false,  
             success : function(jsonData){
                 console.log("multipart_upload jsonData >>>", jsonData)
+                alert("Upload 완료");
             },
             error : function(){
 
