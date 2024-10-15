@@ -208,7 +208,7 @@ def meta_insert(request):
         meta_form = MetadataForm(data_dict)
         if meta_form.is_valid():
             meta_save_obj = meta_form.save()
-            return redirect(reverse('meta_detail',args=[meta_save_obj.data_set_idx]))
+            return redirect(reverse('preprocessing:meta_detail',args=[meta_save_obj.data_set_idx]))
         else :
             print("error param >>>", meta_form.errors)
             # 각 필드의 오류를 확인하고 메시지를 추가
@@ -216,22 +216,22 @@ def meta_insert(request):
             for field, errors in meta_form.errors.items():
                 for error in errors:
                     error_messages.append(f"{field}: {error}")
-            alert_message = "\\n".join(error_messages)
-            raise CustomMessageException(f"Metadata 입력값 에러 : \\n{alert_message}")
+            alert_message = '\\n'.join(error_messages)
+            raise CustomMessageException(f'Metadata 입력값 에러 : \\n{alert_message}')
         
     except CustomMessageException as e:
         trace_back = traceback.format_exc()
-        print("meta_insert trace_back >>>", trace_back)
-        print("meta_insert message >>>", e.message)
+        print('meta_insert trace_back >>>', trace_back)
+        print('meta_insert message >>>', e.message)
         messages.error(request, e.message)
-        return redirect(reverse('meta_insert_page'))
+        return redirect(reverse('preprocessing:meta_insert_page'))
     
     except Exception as e:
         trace_back = traceback.format_exc()
         print(trace_back)
-        print("def meta_insert 에러")
-        messages.error(request, "def meta_insert 에러")
-        return redirect(reverse('meta_insert_page'))
+        print('def meta_insert 에러')
+        messages.error(request, 'def meta_insert 에러')
+        return redirect(reverse('preprocessing:meta_insert_page'))
 
 def meta_update(request, data_set_idx):
     context = {}
@@ -296,20 +296,20 @@ def meta_update(request, data_set_idx):
             alert_message = "\\n".join(error_messages)
             raise CustomMessageException(f"Metadata 입력값 에러 : \\n{alert_message}")
         
-        return redirect(reverse('meta_detail',args=[data_set_idx]))
+        return redirect(reverse('preprocessing:meta_detail',args=[data_set_idx]))
     except CustomMessageException as e:
         trace_back = traceback.format_exc()
         print("meta_update trace_back >>>", trace_back)
         print("meta_update message >>>", e.message)
         messages.error(request, e.message)
-        return redirect(reverse('meta_update_page',args=[data_set_idx]))
+        return redirect(reverse('preprocessing:meta_update_page',args=[data_set_idx]))
     
     except Exception as e:
         trace_back = traceback.format_exc()
         print(trace_back)
         print("def meta_update 에러")
         messages.error(request, "def meta_update 에러")
-        return redirect(reverse('meta_update_page',args=[data_set_idx]))
+        return redirect(reverse('preprocessing:meta_update_page',args=[data_set_idx]))
     
 def meta_delete(request, data_set_idx):
     context = {}
@@ -317,7 +317,7 @@ def meta_delete(request, data_set_idx):
     if meta_data.exists():
         meta_data = meta_data[0]
     meta_data.delete()
-    return redirect(reverse('meta_list'))
+    return redirect(reverse('preprocessing:meta_list'))
 
 
 #####################################
@@ -407,7 +407,7 @@ def noise_detail(request):
         meta_data_idx = request.GET.get("data_set_idx")
         trace_back = traceback.format_exc()
         print("noise_detail trace_back >>>", trace_back)
-        return redirect(reverse('meta_detail', args=[meta_data_idx]))
+        return redirect(reverse('preprocessing:meta_detail', args=[meta_data_idx]))
     
 def noise_update_page(request, ni_set_idx):
     context ={}
@@ -420,7 +420,7 @@ def noise_update_page(request, ni_set_idx):
         meta_data_idx = request.GET.get("data_set_idx")
         trace_back = traceback.format_exc()
         print("noise_detail trace_back >>>", trace_back)
-        return redirect(reverse('meta_detail', args=[meta_data_idx]))        
+        return redirect(reverse('preprocessing:meta_detail', args=[meta_data_idx]))        
 
 def noise_update(request):
     context={}
@@ -469,7 +469,7 @@ def noise_delete(request, ni_set_idx):
         print(trace_back)
     finally :
         meta_data_idx = request.GET.get('data_set_idx')
-        return redirect(reverse('noise_list',args=[meta_data_idx]))
+        return redirect(reverse('preprocessing:noise_list',args=[meta_data_idx]))
     
     
     # ni_set_idx
@@ -548,13 +548,13 @@ def sound_detail(request, meta_data_idx):
         trace_back = traceback.format_exc()
         print(trace_back)
         print("sound_detail Server Error")
-        return redirect(reverse('sound_detail_list',args=[meta_data_idx]))
+        return redirect(reverse('preprocessing:sound_detail_list',args=[meta_data_idx]))
     
     except CustomMessageException as e:
         trace_back = traceback.format_exc()
         print(trace_back)
         print("sound_detail Error Msg >>>", e.message)
-        return redirect(reverse('sound_detail_list',args=[meta_data_idx]))
+        return redirect(reverse('preprocessing:sound_detail_list',args=[meta_data_idx]))
 
 def sound_detail_update_page(request, meta_data_idx):
     context = {}
@@ -573,12 +573,12 @@ def sound_detail_update_page(request, meta_data_idx):
         trace_back = traceback.format_exc()
         print(trace_back)
         print("sound_detail Error Msg >>>", e.message)
-        return redirect(reverse('sound_detail_list',args=[meta_data_idx]))
+        return redirect(reverse('preprocessing:sound_detail_list',args=[meta_data_idx]))
     except Exception as e:
         trace_back = traceback.format_exc()
         print(trace_back)
         print("sound_detail Server Error")
-        return redirect(reverse('sound_detail_list',args=[meta_data_idx]))
+        return redirect(reverse('preprocessing:sound_detail_list',args=[meta_data_idx]))
 
 
 def sound_detail_update(request):

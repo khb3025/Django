@@ -38,7 +38,7 @@
                 delete jsonData['csrfmiddlewaretoken'];
                 console.log("noise insert jsonData >>>", jsonData)
                 $.ajax({
-                    url:"{% url 'noise_insert' %}",
+                    url:"{% url 'preprocessing:noise_insert' %}",
                     type : "POST",
                     data : JSON.stringify(jsonData),
                     beforeSend : function(xhr){
@@ -47,7 +47,7 @@
                     success : function(response){
                         console.log("response >>>", response)
                         n_data = response.data;
-                        location.href = "{% url 'noise_detail' %}"+"?ni_set_idx="+ n_data['ni_set_idx']+ "&data_set_idx=" + n_data['ni_set_idx'];
+                        location.href = "{% url 'preprocessing:noise_detail' %}"+"?ni_set_idx="+ n_data['ni_set_idx']+ "&data_set_idx=" + n_data['ni_set_idx'];
                     },
                     error : function(response){
                         if(typeof response.responseJSON != "undefined"){
@@ -116,9 +116,9 @@
             </tbody>
         </table>
         <br>
-        <a href="{% url 'meta_detail' meta_data_idx %}" class="btn">메타데이터 상세</a>
-        <a href="{% url 'meta_list' %}" class="btn">메타데이터 리스트</a>
-        <a href="{% url 'noise_list' meta_data_idx %}" class="btn_noise">배경소리 리스트</a>
+        <a href="{% url 'preprocessing:meta_detail' meta_data_idx %}" class="btn">메타데이터 상세</a>
+        <a href="{% url 'preprocessing:meta_list' %}" class="btn">메타데이터 리스트</a>
+        <a href="{% url 'preprocessing:noise_list' meta_data_idx %}" class="btn_noise">배경소리 리스트</a>
         <button id="noise_submit" type="button" class="btn btn-submit">제출</button>
     </form>
 </body>

@@ -1,5 +1,4 @@
 $(document).ready(function(){
-    console.log("aaaaaaaaaaaaaaa");
     let page = new preprocessingPage();
     page.init();
 });
@@ -20,7 +19,7 @@ preprocessingPage.prototype.initDataTable = function(){
         stateSave: false, 
         autoWidth: false,
         ajax: {
-            url: "{% url 'get_preprocessing_list' %}",
+            url: "{% url 'preprocessing:get_preprocessing_list' %}",
             type: "POST", 
             data: function( d ){
                 d.csrfmiddlewaretoken = $.cookie('csrftoken');
@@ -99,7 +98,7 @@ preprocessingPage.prototype.initEvent = function(){
     $("#preprocessing").on("click",function(){
         let detailIdList = self.checkItemId();
         $.ajax({
-            url : "{% url 'preprocessing' %}",
+            url : "{% url 'preprocessing:preprocessing' %}",
             type : "POST",
             data : JSON.stringify(detailIdList),
             beforeSend : function(xhr){
@@ -121,7 +120,7 @@ preprocessingPage.prototype.initEvent = function(){
     $("#preprocessingDelete").on("click",function(){
         let detailIdList = self.checkItemId();
         $.ajax({
-            url : "{% url 'preprocessing_delete' %}",
+            url : "{% url 'preprocessing:preprocessing_delete' %}",
             type : "POST",
             data : JSON.stringify(detailIdList),
             beforeSend : function(xhr){

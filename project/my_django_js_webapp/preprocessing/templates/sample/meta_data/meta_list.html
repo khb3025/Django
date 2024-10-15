@@ -78,9 +78,9 @@
                         <td>-</td>
                     {% endif %}
                     <td>{{ meta_item.daq_sam_rte }}</td>
-                    <td><a href="{% url 'meta_detail' meta_item.data_set_idx %}">보기</a></td>
-                    <td><a href="{% url 'meta_update_page' meta_item.data_set_idx %}">수정</a></td>
-                    <td><a href="{% url 'meta_delete' meta_item.data_set_idx %}">삭제</a></td>
+                    <td><a href="{% url 'preprocessing:meta_detail' meta_item.data_set_idx %}">보기</a></td>
+                    <td><a href="{% url 'preprocessing:meta_update_page' meta_item.data_set_idx %}">수정</a></td>
+                    <td><a href="{% url 'preprocessing:meta_delete' meta_item.data_set_idx %}">삭제</a></td>
                 </tr>
                 {% empty %}
                 <tr>
@@ -90,8 +90,8 @@
             </tbody>
         </table>
         <br>
-        <a href="{% url 'meta_intro' %}" class="btn">메타데이터 인트로 화면</a>
-        <a href="{% url 'meta_insert_page' %}" class="btn">메타데이터 생성</a>
+        <a href="{% url 'preprocessing:meta_intro' %}" class="btn">메타데이터 인트로 화면</a>
+        <a href="{% url 'preprocessing:meta_insert_page' %}" class="btn">메타데이터 생성</a>
         
         
     </ul>

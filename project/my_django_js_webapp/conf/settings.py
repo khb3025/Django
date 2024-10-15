@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'evaluation_set',
     'preprocessing',
     'rawsound', # 추가
+    'multipart_upload_sample',
 ]
 
 

@@ -47,7 +47,7 @@
                 r_data['data_set_idx'] = $("#data_set_idx").val();
                 
                 $.ajax({
-                    url : "{% url 'sound_detail_delete' %}",
+                    url : "{% url 'preprocessing:sound_detail_delete' %}",
                     type : "POST",
                     data : JSON.stringify(r_data),
                     contentType: "application/json",
@@ -57,12 +57,12 @@
                     },
                     success : function(response){
                         alert(response["msg"]);
-                        location.href= "{% url 'sound_detail_list' s_d_obj.data_set_idx %}";
+                        location.href= "{% url 'preprocessing:sound_detail_list' s_d_obj.data_set_idx %}";
                     },
                     error : function(response){
                         if(typeof response.responseJSON != "undefined"){
                             alert(response.responseJSON.msg)
-                            location.href= "{% url 'sound_detail_list' s_d_obj.data_set_idx %}";
+                            location.href= "{% url 'preprocessing:sound_detail_list' s_d_obj.data_set_idx %}";
                         }
                     }
 
@@ -146,8 +146,8 @@
             </tbody>
         </table>
         <br>
-        <a href="{% url 'sound_detail_list' s_d_obj.data_set_idx %}" class="btn_detail">소리상세 리스트</a>
-        <a href="{% url 'sound_detail_update_page' s_d_obj.data_set_idx %}?snd_set_idx={{ s_d_obj.snd_set_idx }}" class="btn_detail">소리상세 수정</a>
+        <a href="{% url 'preprocessing:sound_detail_list' s_d_obj.data_set_idx %}" class="btn_detail">소리상세 리스트</a>
+        <a href="{% url 'preprocessing:sound_detail_update_page' s_d_obj.data_set_idx %}?snd_set_idx={{ s_d_obj.snd_set_idx }}" class="btn_detail">소리상세 수정</a>
         <a href="javascript:void(0);" id="sound_detail_delete" class="btn_detail">소리상세 삭제</a>
     </form>
 </body>

@@ -80,9 +80,9 @@
             </tbody>
         </table>
         <br>
-        <a href="{% url 'noise_list' noise_obj.data_set_idx.data_set_idx %}" class="btn">배경소리 리스트</a>
-        <a href="{% url 'noise_update_page' noise_obj.ni_set_idx %}?data_set_idx={{ noise_obj.data_set_idx.data_set_idx }}" class="btn">수정</a>
-        <a href="{% url 'noise_delete' noise_obj.ni_set_idx %}?data_set_idx={{ noise_obj.data_set_idx.data_set_idx }}" class="btn">삭제</a>
+        <a href="{% url 'preprocessing:noise_list' noise_obj.data_set_idx.data_set_idx %}" class="btn">배경소리 리스트</a>
+        <a href="{% url 'preprocessing:noise_update_page' noise_obj.ni_set_idx %}?data_set_idx={{ noise_obj.data_set_idx.data_set_idx }}" class="btn">수정</a>
+        <a href="{% url 'preprocessing:noise_delete' noise_obj.ni_set_idx %}?data_set_idx={{ noise_obj.data_set_idx.data_set_idx }}" class="btn">삭제</a>
     </form>
 </body>
 </html>

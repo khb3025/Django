@@ -49,7 +49,7 @@
                 delete jsonData['csrfmiddlewaretoken'];
                 
                 $.ajax({
-                    url:"{% url 'sound_detail_update' %}",
+                    url:"{% url 'preprocessing:sound_detail_update' %}",
                     type : "POST",
                     data : JSON.stringify(jsonData),
                     contentType: "application/json",
@@ -60,7 +60,7 @@
                     success : function(response){
                         console.log("response >>>", response)
                         s_d_data = response.data;
-                        let redirectUrl = "{% url 'sound_detail' 0 %}"+"?snd_set_idx="+ s_d_data['snd_set_idx'];
+                        let redirectUrl = "{% url 'preprocessing:sound_detail' 0 %}"+"?snd_set_idx="+ s_d_data['snd_set_idx'];
                         redirectUrl = redirectUrl.replace('/0/', '/'+s_d_data['data_set_idx']+'/')
                         location.href = redirectUrl;
                     },
@@ -151,7 +151,7 @@
             </tbody>
         </table>
         <br>
-        <a href="{% url 'sound_detail_list' s_d_obj.data_set_idx %}" class="btn_detail">소리상세 리스트</a>
+        <a href="{% url 'preprocessing:sound_detail_list' s_d_obj.data_set_idx %}" class="btn_detail">소리상세 리스트</a>
         <button id="sound_detail_submit" type="button" class="btn btn-submit">제출</button>
     </form>
 </body>

@@ -59,7 +59,7 @@
                 r_data['data_set_idx'] = $(this).closest('tr').find("input[name='data_set_idx']").val();
                 
                 $.ajax({
-                    url : "{% url 'sound_detail_delete' %}",
+                    url : "{% url 'preprocessing:sound_detail_delete' %}",
                     type : "POST",
                     data : JSON.stringify(r_data),
                     contentType: "application/json",
@@ -146,8 +146,8 @@
                     <td>{{ s_detail.snd_device }}</td>
                     <td>{{ s_detail.snd_danger }}</td>
 
-                    <td><a href="{% url 'sound_detail' meta_data_idx %}?snd_set_idx={{ s_detail.snd_set_idx }}" >보기</a></td>
-                    <td><a href="{% url 'sound_detail_update_page' meta_data_idx %}?snd_set_idx={{ s_detail.snd_set_idx }}">수정</a></td>
+                    <td><a href="{% url 'preprocessing:sound_detail' meta_data_idx %}?snd_set_idx={{ s_detail.snd_set_idx }}" >보기</a></td>
+                    <td><a href="{% url 'preprocessing:sound_detail_update_page' meta_data_idx %}?snd_set_idx={{ s_detail.snd_set_idx }}">수정</a></td>
                     <td><a name="sound_detail_delete" href="javascript:void(0);">삭제</a></td>
                 </tr>
                 {% empty %}
@@ -158,11 +158,11 @@
             </tbody>
         </table>
         <br>
-        <a href="{% url 'meta_detail' meta_data_idx %}" class="btn">메타데이터 상세</a>
-        <a href="{% url 'meta_list' %}" class="btn">메타데이터 리스트</a>
-        <a href="{% url 'meta_intro' %}" class="btn">메타데이터 인트로 화면</a>
+        <a href="{% url 'preprocessing:meta_detail' meta_data_idx %}" class="btn">메타데이터 상세</a>
+        <a href="{% url 'preprocessing:meta_list' %}" class="btn">메타데이터 리스트</a>
+        <a href="{% url 'preprocessing:meta_intro' %}" class="btn">메타데이터 인트로 화면</a>
         
-        <a href="{% url 'sound_detail_insert_page' meta_data_idx %}" class="btn_noise">소리 입력</a>
+        <a href="{% url 'preprocessing:sound_detail_insert_page' meta_data_idx %}" class="btn_noise">소리 입력</a>
         
     </ul>
 </body>

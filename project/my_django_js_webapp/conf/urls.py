@@ -2,6 +2,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from rawsound import urls as rawsound
+from preprocessing import urls as preprocessing
 from common.views import index
 from django.conf.urls.static import static
 
@@ -12,7 +13,11 @@ urlpatterns = [
     path('board/', include('boards.urls')),
     path('kisti/', include('sound.urls')),
     path('board/list/  #화면 샘플', include('boards.urls')),
-    path('preprocessing/', include('preprocessing.urls')),
+<<<<<<< Updated upstream
+    path('preprocessing/', include((preprocessing, 'preprocessing'), namespace='preprocessing')),
+=======
+    path('preprocessing/', include('preprocessing.urls'), namespace='preprocessing'),
+>>>>>>> Stashed changes
     path('evaluation_set/', include('evaluation_set.urls')),
     path('rawsound/', include((rawsound, 'rawsound'), namespace='rawsound')),
 ]
