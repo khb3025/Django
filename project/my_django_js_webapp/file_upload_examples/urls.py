@@ -11,6 +11,7 @@ router.register(r'meta', MetadataViewSet)
 urlpatterns = [
     
     path('', include(router.urls)),
-   
+    path('multipart_upload_page', multipart_upload_page, name='multipart_upload_page'),
+    path('multipart_upload', multipart_upload, name='multipart_upload'),
 
 ]

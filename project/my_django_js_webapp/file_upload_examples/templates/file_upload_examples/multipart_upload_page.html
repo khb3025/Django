@@ -1,0 +1,38 @@
+{% extends "main_base.html" %}
+{% load static %}
+{% block contents %}
+    <style>
+        /* 라벨 스타일 추가 */
+        .upload_bold_label {
+            font-weight: bold; /* 글씨를 두껍게 */
+            color: #000; /* 색상 설정 (원하는 색으로 변경 가능) */
+            margin-right: 10px;
+        }
+    </style> 
+
+    <h1>multipart_upload example</h1>
+    <form id="multi_upload_form">
+        {% csrf_token %}
+        <div>
+            업로드 예: <input type="file" id="multi_upload" name="multi_upload" multiple>
+        </div>
+        <div>
+            <ul id="file_list">
+                <!--
+                    <li>
+                        <label class=".upload_bold_label">aaa.txt</label>
+                        <button class="delete_file" value="1">X</button>
+                    </li>
+                -->
+            </ul>
+        </div>
+
+        <button type="submit" id="submit_form">제출</button>
+    </form>
+{% endblock %}
+
+{% block script %}
+    <script>
+        {% include "file_upload_examples/multipart_upload.js" %}
+    </script>
+{% endblock %}
