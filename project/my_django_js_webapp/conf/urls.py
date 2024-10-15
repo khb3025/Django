@@ -17,4 +17,4 @@ urlpatterns = [
     path('rawsound/', include((rawsound, 'rawsound'), namespace='rawsound')),
 ]
 
-urlpatterns += static("/excel/", document_root="media/upload/excel/")
+urlpatterns += static('/excel/', document_root='media/upload/excel/')

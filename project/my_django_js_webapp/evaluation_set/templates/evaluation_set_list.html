@@ -1,96 +1,14 @@
-{% extends 'main_base.html' %}
+{% extends "main_base.html" %}
 {% load static %}
 
 {% block script %}
     <script>
-        $(document).ready(function(){
-            $('#evaluation_set_list_table').DataTable({
-                ordering: true,
-                stateSave: false, // 캐시 비활성화
-                order: [[0, "desc"]],
-                ajax: {
-                    url: '{% url "evaluation_set_list" %}',
-                    method: 'POST',
-                    data: {
-                        'csrfmiddlewaretoken': $.cookie('csrftoken')
-                    }
-                },
-                columnDefs: [
-                    {
-                        targets: 0,
-                        data: "noise__ni_info",
-                        render: function (data) {
-                            return data ? moment(data).format("YYYY/MM/DD HH:mm:ss") : "-";
-                        }
-                    },
-                    {
-                        targets: 1,
-                        data: "noise__ni_info"
-                    },
-                    {
-                        targets: 2,
-                        data: "noise__ni_info",
-                        render: function(data){
-                            return data;
-                        }
-                    },
-                    {
-                        targets: 3,
-                        data: "noise__ni_info",
-                        render: function(data){
-                            return "<button type='button' onclick='view_forward_image(" + data + ")'>이미지 보기</button>";
-                        }
-                    },
-                    {
-                        targets: 4,
-                        data: "noise__ni_info",
-                        render: function (data) {
-                            return data ? moment(data).format("YYYY/MM/DD HH:mm:ss") : "-";
-                        }
-                    },
-                    {
-                        targets: 5,
-                        data: "noise__ni_info",
-                        render: function (data) {
-                            return data ? moment(data).format("YYYY/MM/DD HH:mm:ss") : "-";
-                        }
-                    },
-                    {
-                        targets: 6,
-                        data: "noise__ni_info",
-                        render: function (data) {
-                            return data ? moment(data).format("YYYY/MM/DD HH:mm:ss") : "-";
-                        }
-                    },
-                    {
-                        targets: 7,
-                        data: "cre_dt",
-                        render: function (data) {
-                            return data ? moment(data).format("YYYY/MM/DD HH:mm:ss") : "-";
-                        }
-                    },
-                    {
-                        targets: "_all",
-                        defaultContent: "-",
-                        render: function (data, type, row, meta) {
-                            if (type === "display" && $.isNumeric(data)) {
-                                // 숫자인 경우 원하는 서식으로 변환
-                                return data ? $.fn.dataTable.render.number( "," ).display(data) : "0";
-                            } else {
-                                return data; // 숫자가 아닌 경우 원래 값 반환
-                            }
-                        }
-                    }
-                ],
-                initComplete: function () {
-                }
-            });
-        })
+        {% include "evaluation_set_list.js" %}
     </script>
 {% endblock %}
 
 {% block contents %}
-    <table id='evaluation_set_list_table'>
+    <table id="evaluation_set_list_table">
         <thead>
             <tr>
                 <th>checkbox</th>
@@ -106,4 +24,38 @@
         <tbody>
         </tbody>
     </table>
+
+    <button>기존 원천데이터</button>
+    <input type="file" name="orgLicenseFile" id="orgLicenseFile" class="p-upload__file--hidden" accept=".xlsx, .xls" value="신규 데이터셋 업로드">
+    <button onclick="file_upload()">신규 데이터셋 업로드</button>
+    <button>신규모델 목록</button>
+    <button>평가목록 생성</button>
+
+    <h2>
+    ----------------------------------------------------------------------------
+    </h2>
+
+    <h3> 기존 원천데이터 팝업 </h3>
+    <button onclick="existing_source_data_selection_excel_download()">엑셀 다운로드</button>
+    <button>데이터셋 생성</button>
+    <table id="source_data_list_table">
+        <thead>
+            <tr>
+                <th>checkbox</th>
+                <th>No.</th>
+                <th>데이터셋명</th>
+                <th>행수 (rows)</th>
+                <th>컬럼수 (columns)</th>
+                <th>크기 (Byte)</th>
+                <th>분류목적</th>
+                <th>모델</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <h2>
+    ----------------------------------------------------------------------------
+    </h2>
 {% endblock %}
