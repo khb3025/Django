@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Metadata List</title>
+    <style>
+        table {
+            width: -webkit-fill-available;
+            border-collapse: collapse;
+            margin: 10px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+    <body>
+        <h1>Metadata List</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Data set</th>
+                        <th>Media url</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for metadata in all_metadata %}
+                        <tr>
+                            <td>{{ metadata.data_set_idx }}</td>
+                            <td>
+                                <a href="{% url 'rawsound:metadata_info' metadata.data_set_idx %}">
+                                    {{ metadata.data_set }}
+                                </a>
+                            </td>
+                            <td>{{ metadata.media_url }}</a></td>
+                        </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+        <div>
+            <a href="{% url 'rawsound:metadata_form' %}">Create new metadata</a>
+        </div>
+    </body>
+</html>

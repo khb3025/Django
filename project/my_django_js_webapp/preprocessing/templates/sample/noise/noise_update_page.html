@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Noise Update Page</title>
+    <style>
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px; /* 여백 추가 */
+        }
+        .btn-submit {
+            background-color: #28a745; /* 제출 버튼 색상 */
+        }
+    </style>
+    <script src="{% static 'preprocessing/js/jquery-3.7.1.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+        
+            $("#noise_submit").on('click',function(){
+                let r_data = form_to_json($("#noise_update"));
+                let csrftoken = r_data['csrfmiddlewaretoken'];
+                delete r_data['csrfmiddlewaretoken'];
+                console.log("Noise Update Page r_data >>>", r_data)
+                $.ajax({
+                    url : "{% url 'noise_update' %}",
+                    type : "POST",
+                    data : JSON.stringify(r_data),
+                    beforeSend : function(xhr){
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    },
+                    success : function(response){
+                        console.log("response >>>", response);
+                        let n_data = response["data"];
+                        location.href = "{% url 'noise_detail' %}?ni_set_idx=" + n_data["ni_set_idx"] + "&data_set_idx=" + n_data["data_set_idx"];
+                    },
+                    error : function(response){
+                        if(typeof response.responseJSON != "undefined"){
+                            console.log("Error Msg >>>",response.responseJSON.msg)
+                            alert(response.responseJSON.msg)
+                        }
+                    }
+                });
+            });
+        })
+        function form_to_json(formNode){
+            let jsonData = {}
+            let formData = formNode.serializeArray();
+            $.each(formData, function() {
+                jsonData[this.name] = this.value;
+            });
+            return jsonData
+        }
+
+    </script>
+</head>
+<body>
+    <h1>Noise Update Page</h1>
+    <form id="noise_update">
+        {% csrf_token %}
+        <input type="hidden" name="ni_set_idx" value="{{ noise_obj.ni_set_idx }}"/>
+        <input type="hidden" name="data_set_idx" value="{{ noise_obj.data_set_idx.data_set_idx }}"/> 
+        <table border="1">
+            <tbody>
+                <tr>
+                    <th>데이터셋</th>
+                    <td><input type="text" name="data_set_idx" value="{{ noise_obj.data_set_idx.data_set_idx }}" disabled />  </td>
+                </tr>
+                <tr>
+                    <th>배경소리 정보</th>
+                    <td><input type="text" name="ni_info" value="{{ noise_obj.ni_info }}"/></td>
+                </tr>
+                <tr>
+                    <th>배경소리 카테고리</th>
+                    <td><input type="text" name="ni_bg_cate" value="{{ noise_obj.ni_bg_cate }}"/></td>
+                </tr>
+                <tr>
+                    <th>배경소리 서브카테고리</th>
+                    <td><input type="text" name="ni_bg_sub_cate" value="{{ noise_obj.ni_bg_sub_cate }}"/></td>
+                </tr>
+                <tr>
+                    <th>배경소리 수집장소</th>
+                    <td><input type="text" name="ni_place" value="{{ noise_obj.ni_place }}"/></td>
+                </tr>
+                <tr>
+                    <th>배경소리 최대 dB</th>
+                    <td><input type="text" name="ni_bg_sdb" value="{{ noise_obj.ni_bg_sdb }}"/></td>
+                </tr>
+                <tr>
+                    <th>배경소리 LUFS</th>
+                    <td><input type="text" name="ni_bg_luf" value="{{ noise_obj.ni_bg_luf }}"/></td>
+                </tr>
+                <tr>
+                    <th>배경소리 녹취 장비</th>
+                    <td><input type="text" name="ni_device" value="{{ noise_obj.ni_device }}"/></td>
+                </tr>
+                <tr>
+                    <th>배경소리 시간</th>
+                    <td><input type="number" name="ni_len" value="{{ noise_obj.ni_len }}"/></td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <a href="{% url 'noise_list' noise_obj.data_set_idx.data_set_idx %}" class="btn">배경소리 리스트</a>
+        <button id="noise_submit" type="button" class="btn btn-submit">제출</button>
+    </form>
+</body>
+</html>

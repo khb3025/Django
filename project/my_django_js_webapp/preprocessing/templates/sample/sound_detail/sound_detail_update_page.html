@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sound Detail Update</title>
+    <style>
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px; /* 여백 추가 */
+        }
+        .btn_noise{
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #FFA500;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px; /* 여백 추가 */
+        }
+        .btn_detail{
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #008000;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px; /* 여백 추가 */
+        }
+        .btn-submit {
+            background-color: #28a745; /* 제출 버튼 색상 */
+        }
+    </style>
+    <script src="{% static 'preprocessing/js/jquery-3.7.1.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            // { url 'noise_insert' }
+            
+            $("#sound_detail_submit").on("click",function(){
+                // 폼 데이터 수집
+                let jsonData = form_to_json($("#sound_detail_update"));
+                console.log("s_detail insert jsonData >>>", jsonData)
+                let csrftoken = jsonData['csrfmiddlewaretoken']
+                delete jsonData['csrfmiddlewaretoken'];
+                
+                $.ajax({
+                    url:"{% url 'sound_detail_update' %}",
+                    type : "POST",
+                    data : JSON.stringify(jsonData),
+                    contentType: "application/json",
+                    beforeSend: function(xhr) {
+                        // CSRF 토큰을 헤더에 추가
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    },
+                    success : function(response){
+                        console.log("response >>>", response)
+                        s_d_data = response.data;
+                        let redirectUrl = "{% url 'sound_detail' 0 %}"+"?snd_set_idx="+ s_d_data['snd_set_idx'];
+                        redirectUrl = redirectUrl.replace('/0/', '/'+s_d_data['data_set_idx']+'/')
+                        location.href = redirectUrl;
+                    },
+                    error : function(response){
+                        if(typeof response.responseJSON != "undefined"){
+                            //console.log("Error Msg >>>",response.responseJSON.msg)
+                            alert(response.responseJSON.msg)
+                        }
+                    }
+                })
+                
+            });
+            
+        });
+
+        function form_to_json(formNode){
+            let jsonData = {}
+            let formData = formNode.serializeArray();
+            $.each(formData, function() {
+                jsonData[this.name] = this.value;
+            });
+            return jsonData
+        }
+
+    </script>
+</head>
+<body>
+    <h1>Sound Detail Update</h1>
+    <form id="sound_detail_update">
+        {% csrf_token %}
+        <table border="1">
+            <input type="hidden" name="snd_set_idx" value="{{ s_d_obj.snd_set_idx }}"/>
+            <input type="hidden" name="data_set_idx" value="{{ s_d_obj.data_set_idx }}"/>
+            <tbody>
+                <tr>
+                    <th>데이터셋</th>
+                    <td><input type="text" name="data_set_idx" value="{{ s_d_obj.data_set_idx }}" disabled /></td>
+                </tr>
+                <tr>
+                    <th>소리 상세정보 값</th>
+                    <td><input type="text" name="snd_info" value="{{ s_d_obj.snd_info }}"/></td>
+                </tr>
+                <tr>
+                    <th>소리 카테고리</th>
+                    <td><input type="text" name="snd_cate" value="{{ s_d_obj.snd_cate }}"/></td>
+                </tr>
+                <tr>
+                    <th>소리 서브카테고리</th>
+                    <td><input type="text" name="snd_sub_cate" value="{{ s_d_obj.snd_sub_cate }}"/></td>
+                </tr>
+                <tr>
+                    <th>소리 상세내용</th>
+                    <td><input type="text" name="snd_cmnt" value="{{ s_d_obj.snd_cmnt }}"/></td>
+                </tr>
+                <tr>
+                    <th>소리 녹취 장소</th>
+                    <td><input type="text" name="snd_place" value="{{ s_d_obj.snd_place }}"/></td>
+                </tr>
+                <tr>
+                    <th>소리 최대 dB</th>
+                    <td><input type="text" name="snd_ni_db" value="{{ s_d_obj.snd_ni_db }}"/></td>
+                </tr>
+                <tr>
+                    <th>소리 LUFS</th>
+                    <td><input type="text" name="snd_ni_luf" value="{{ s_d_obj.snd_ni_luf }}"/></td>
+                </tr>
+                <tr>
+                    <th>소리 시작 시간</th>
+                    <td><input type="text" name="snd_srt_time" value="{{ s_d_obj.snd_srt_time }}"/></td>
+                </tr>
+                <tr>
+                    <th>소리 종료 시간</th>
+                    <td><input type="text" name="snd_end_time" value="{{ s_d_obj.snd_end_time }}"/></td>
+                </tr>
+                <tr>
+                    <th>소리 시간</th>
+                    <td><input type="text" name="snd_len" value="{{ s_d_obj.snd_len }}"/></td>
+                </tr>
+                <tr>
+                    <th>소리 녹취장비</th>
+                    <td><input type="text" name="snd_device" value="{{ s_d_obj.snd_device }}"/></td>
+                </tr>
+                <tr>
+                    <th>소리 위급 수준</th>
+                    <td><input type="text" name="snd_danger" value="{{ s_d_obj.snd_danger }}"/></td>
+                </tr>
+            
+            </tbody>
+        </table>
+        <br>
+        <a href="{% url 'sound_detail_list' s_d_obj.data_set_idx %}" class="btn_detail">소리상세 리스트</a>
+        <button id="sound_detail_submit" type="button" class="btn btn-submit">제출</button>
+    </form>
+</body>
+</html>

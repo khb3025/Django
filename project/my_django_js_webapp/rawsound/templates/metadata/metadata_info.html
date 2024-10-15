@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .form-group {
+            display: flex;
+            align-items: center; /* 라벨과 입력 필드를 수직 가운데 정렬 */
+            margin-bottom: 10px;
+        }
+        form label {
+            width: 120px;
+            font-size: 16px;
+            text-align: right;
+            margin-right: 10px;
+        }
+        form input {
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: 250px;
+        }
+        form button {
+            font-size: 16px;
+            display: block;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        function setAction(button) {
+            document.getElementById('metadata-form').action = button.value;
+        }
+    </script>
+</head>
+    <body>
+        {% if metadata %}
+        <h1>Metadata No.{{metadata.data_set_idx}}</h1>
+        {% else %}
+        <h1>New Metadata Info</h1>
+        {% endif %}
+        <form id="metadata-form" method="post" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <h3>Metadata</h3>
+            <div class="form-group">
+                <label for="data_set">data_set</label>
+                <input type="text" name="data_set" value="{{ metadata.data_set }}" required minlength="1" placeholder="varchar(150)">
+            </div>
+            <div class="form-group">
+                <label for="version">version</label>
+                <input type="text" name="version" value="{{ metadata.version }}" required minlength="1" placeholder="varchar(150)">
+            </div>
+            <div class="form-group">
+                <label for="media_url">media_url</label>
+                <input type="text" name="media_url" value="{{ metadata.media_url }}" required minlength="1" placeholder="varchar(150)">
+            </div>
+            <div class="form-group">
+                <label for="ado_result">ado_result</label>
+                <input type="text" name="ado_result" value="{{ metadata.ado_result }}" required minlength="1" placeholder="varchar(150)">
+            </div>
+            <div class="form-group">
+                <label for="bit_dep">bit_dep</label>
+                <input type="number" name="bit_dep" value="{{ metadata.bit_dep }}" required minlength="1" placeholder="int(11)">
+            </div>
+            <div class="form-group">
+                <label for="rec_strime">rec_strime</label>
+                <input type="text" name="rec_strime" value="{{ metadata.rec_strime }}" required minlength="1" placeholder="varchar(150)">
+            </div>
+            <div class="form-group">
+                <label for="tdms_flag">tdms_flag</label>
+                <input type="text" name="tdms_flag" value="{{ metadata.tdms_flag }}" required minlength="1" placeholder="varchar(150)">
+            </div>
+            <div class="form-group">
+                <label for="reg_user">reg_user</label>
+                <input type="text" name="reg_user" value="{{ metadata.reg_user }}" required minlength="1" placeholder="varchar(150)">
+            </div>
+
+            {% if metadata %}
+            <div class="form-group">
+                <button type="submit" name="action" value="{% url 'rawsound:update_metadata' metadata.data_set_idx %}" onclick="setAction(this)">Update</button>
+                <button type="submit" name="action" value="{% url 'rawsound:delete_metadata' metadata.data_set_idx %}" onclick="setAction(this)">Delete</button>
+            </div>
+            {% else %}
+            <button type="submit" name="action" value="{% url 'rawsound:create_metadata' %}" onclick="setAction(this)">Create</button>
+            {% endif %}
+        </form>
+
+        {% if metadata %}
+        <div class="form-group">
+            <a href="{% url 'rawsound:noise_info' metadata.data_set_idx %}">Show noise list</a>
+        </div>
+        <div class="form-group">
+            <a href="{% url 'rawsound:detail_info' metadata.data_set_idx %}">Show detail list</a>
+        </div>
+        {% endif %}
+        <div class="form-group">
+            <a href="{% url 'rawsound:metadata_list' %}">Go back to metadata list</a>
+        </div>
+    </body>
+</html>

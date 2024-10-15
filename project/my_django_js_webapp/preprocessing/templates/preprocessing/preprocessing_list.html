@@ -1,0 +1,76 @@
+{% extends "main_base.html" %}
+{% load static %}
+{% block contents %}
+
+{% csrf_token %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    .btn {
+        display: inline-block;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        margin: 5px; /* 여백 추가 */
+    }
+    .btn_noise{
+        display: inline-block;
+        padding: 10px 15px;
+        background-color: #FFA500;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        margin: 5px; /* 여백 추가 */
+    }
+    .btn-submit {
+        background-color: #28a745; /* 제출 버튼 색상 */
+    }
+</style> 
+
+    <h1>preprocessingItemList</h1>
+    <div>
+        <button id="preprocessing">정제</button>
+        <button id="preprocessingDelete">삭제</button>
+    </div>
+    <div>
+        <table id="preprocessingItemList">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" id="wholeChk"/>
+                        선택(소리상세)
+                    </th>
+                    <th>파일명</th>
+                    <th>등록일</th>
+                    <th>대 분류</th>
+                    <th>상세분류</th>
+                    <th>이상치 종류</th>
+                    <th>파일 길이 (sec)</th>
+                    <th>소리 최대 (db)</th>
+                    <th>상태</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        {% include "preprocessing/preprocessing.js" %}
+    </script>
+{% endblock %}

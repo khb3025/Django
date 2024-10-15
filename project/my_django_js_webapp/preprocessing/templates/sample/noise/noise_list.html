@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Noise List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px; /* 여백 추가 */
+        }
+        .btn_noise{
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #FFA500;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px; /* 여백 추가 */
+        }
+        .btn-submit {
+            background-color: #28a745; /* 제출 버튼 색상 */
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Noise List</h1>
+    <ul>
+        <table>
+            <thead>
+                <tr>
+                    <th>데이터 셋</th>
+                    <th>배경소리 정보</th>
+                    <th>배경소리 카테고리</th>
+                    <th>배경소리 서브카테고리</th>
+                    <th>배경소리 수집장소</th>
+
+                    <th>배경소리 최대 dB</th>
+                    <th>배경소리 LUFS</th>
+                    <th>배경소리 녹취 장비</th>
+                    <th>배경소리 시간</th>
+                    
+                    <th>상세보기</th>
+                    <th>수정</th>
+                    <th>삭제</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for noise_item in noise_list %}
+                <tr>
+                    <td>{{ noise_item.data_set_idx_id }}</td>
+                    <td>{{ noise_item.ni_info }}</td>
+                    <td>{{ noise_item.ni_bg_cate }}</td>
+                    <td>{{ noise_item.ni_bg_sub_cate }}</td>
+                    <td>{{ noise_item.ni_place }}</td>
+
+                    <td>{{ noise_item.ni_bg_sdb }}</td>
+                    <td>{{ noise_item.ni_bg_luf }}</td>
+                    <td>{{ noise_item.ni_device }}</td>
+                    <td>{{ noise_item.ni_len }}</td>
+
+                    <td><a href="{% url 'noise_detail' %}?ni_set_idx={{noise_item.ni_set_idx}}&data_set_idx={{noise_item.data_set_idx_id}}">보기</a></td>
+                    <td><a href="{% url 'noise_update_page' noise_item.ni_set_idx %}?data_set_idx={{noise_item.data_set_idx_id}}">수정</a></td>
+                    <td><a href="{% url 'noise_delete' noise_item.ni_set_idx %}?data_set_idx={{noise_item.data_set_idx_id}}">삭제</a></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="13">No data available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <a href="{% url 'meta_detail' meta_data_idx %}" class="btn">메타데이터 상세</a>
+        <a href="{% url 'meta_list' %}" class="btn">메타데이터 리스트</a>
+        <a href="{% url 'meta_intro' %}" class="btn">메타데이터 인트로 화면</a>
+        
+        <a href="{% url 'noise_insert_page' meta_data_idx %}" class="btn_noise">배경 소리 입력</a>
+
+    </ul>
+</body>
+</html>
+

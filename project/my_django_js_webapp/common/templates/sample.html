@@ -1,0 +1,53 @@
+{% extends 'main_base.html' %}
+{% load static %}
+
+{% block script %}
+    <script>
+        $(document).ready(function(){
+            $('#myTable').DataTable();
+        })
+
+        function sample_download(){
+            $.ajax({
+                url: "{% url 'sample_excel_download' %}",
+                method: "POST",
+                data: {
+                    "csrfmiddlewaretoken": $.cookie("csrftoken")
+                },
+                success: function(data){
+                    if(data.success){
+                        const tag_a = document.createElement("a");
+                        tag_a.href = data.save_path;
+                        tag_a.download = data.file_name;
+                        tag_a.click();
+                    }else{
+                        alert(data.message);
+                    }
+                },
+            })
+        }
+    </script>
+{% endblock %}
+
+{% block contents %}
+    <table id='myTable' class='display'>
+        <thead>
+            <tr>
+                <th>Column 1</th>
+                <th>Column 2</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Row 1 Data 1</td>
+                <td>Row 1 Data 2</td>
+            </tr>
+            <tr>
+                <td>Row 2 Data 1</td>
+                <td>Row 2 Data 2</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button onclick="sample_download()">excel_download</button>
+{% endblock %}

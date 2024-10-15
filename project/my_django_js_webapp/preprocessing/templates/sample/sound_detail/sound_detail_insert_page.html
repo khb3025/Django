@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sound Detail Insert Page</title>
+    <style>
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px; /* 여백 추가 */
+        }
+        .btn_noise{
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #FFA500;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px; /* 여백 추가 */
+        }
+        .btn-submit {
+            background-color: #28a745; /* 제출 버튼 색상 */
+        }
+    </style>
+    <script src="{% static 'preprocessing/js/jquery-3.7.1.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            // { url 'noise_insert' }
+            
+            $("#s_detail_submit").on("click",function(){
+                // 폼 데이터 수집
+                let jsonData = form_to_json($("#sound_detail_insert"));
+                console.log("s_detail insert jsonData >>>", jsonData)
+                jsonData['data_set_idx'] = $("input[name='data_set_idx']").val();
+                let csrftoken = jsonData['csrfmiddlewaretoken']
+                delete jsonData['csrfmiddlewaretoken'];
+                $.ajax({
+                    url:"{% url 'sound_detail_insert' %}",
+                    type : "POST",
+                    data : JSON.stringify(jsonData),
+                    contentType: "application/json",
+                    beforeSend: function(xhr) {
+                        // CSRF 토큰을 헤더에 추가
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    },
+                    success : function(response){
+                        console.log("response >>>", response)
+                        s_d_data = response.sound_detail_obj;
+                        let redirectUrl = "{% url 'sound_detail' 0 %}"+"?snd_set_idx="+ s_d_data['snd_set_idx'];
+                        redirectUrl = redirectUrl.replace('/0/','/'+ String(s_d_data['data_set_idx']) + '/')
+                        location.href = redirectUrl;
+                    },
+                    error : function(response){
+                        if(typeof response.responseJSON != "undefined"){
+                            //console.log("Error Msg >>>",response.responseJSON.msg)
+                            alert(response.responseJSON.msg)
+                        }
+                    }
+                })
+            });
+            
+        });
+
+        function form_to_json(formNode){
+            let jsonData = {}
+            let formData = formNode.serializeArray();
+            $.each(formData, function() {
+                jsonData[this.name] = this.value;
+            });
+            return jsonData
+        }
+
+    </script>
+</head>
+<body>
+    <h1>Sound Detail</h1>
+    <form id="sound_detail_insert">
+        {% csrf_token %}
+        <table border="1">
+            <tbody>
+                <tr>
+                    <th>데이터셋</th>
+                    <td><input type="text" name="data_set_idx" value="{{ meta_data_idx }}" disabled />  </td>
+                </tr>
+                <tr>
+                    <th>소리 상세정보 값</th>
+                    <td><input type="text" name="snd_info" /></td>
+                </tr>
+                <tr>
+                    <th>소리 카테고리</th>
+                    <td><input type="text" name="snd_cate" /></td>
+                </tr>
+                <tr>
+                    <th>소리 서브카테고리</th>
+                    <td><input type="text" name="snd_sub_cate" /></td>
+                </tr>
+                <tr>
+                    <th>소리 상세내용</th>
+                    <td><input type="text" name="snd_cmnt" /></td>
+                </tr>
+                <tr>
+                    <th>소리 녹취 장소</th>
+                    <td><input type="text" name="snd_place" /></td>
+                </tr>
+                <tr>
+                    <th>소리 최대 dB</th>
+                    <td><input type="text" name="snd_ni_db" /></td>
+                </tr>
+                <tr>
+                    <th>소리 LUFS</th>
+                    <td><input type="text" name="snd_ni_luf" /></td>
+                </tr>
+                <tr>
+                    <th>소리 시작 시간</th>
+                    <td><input type="text" name="snd_srt_time" /></td>
+                </tr>
+                <tr>
+                    <th>소리 종료 시간</th>
+                    <td><input type="text" name="snd_end_time" /></td>
+                </tr>
+                <tr>
+                    <th>소리 시간</th>
+                    <td><input type="number" name="snd_len" /></td>
+                </tr>
+                <tr>
+                    <th>소리 녹취장비</th>
+                    <td><input type="text" name="snd_device" /></td>
+                </tr>
+                <tr>
+                    <th>소리 위급 수준</th>
+                    <td><input type="text" name="snd_danger" /></td>
+                </tr>
+            
+            </tbody>
+        </table>
+        <br>
+        <a href="{% url 'meta_detail' meta_data_idx %}" class="btn">메타데이터 상세</a>
+        <a href="{% url 'meta_list' %}" class="btn">메타데이터 리스트</a>
+        <a href="{% url 'noise_list' meta_data_idx %}" class="btn_noise">배경소리 리스트</a>
+        <button id="s_detail_submit" type="button" class="btn btn-submit">제출</button>
+    </form>
+</body>
+</html>

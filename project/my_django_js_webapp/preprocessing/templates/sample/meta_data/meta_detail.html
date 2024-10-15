@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meta Detail Info</title>
+    <style>
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px; /* 여백 추가 */
+        }
+        .btn_noise{
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #FFA500;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px; /* 여백 추가 */
+        }
+        .btn_detail{
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #008000;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px; /* 여백 추가 */
+        }
+        .btn-submit {
+            background-color: #28a745; /* 제출 버튼 색상 */
+        }
+    </style>
+</head>
+<body>
+    <h1>Meta Detail Info</h1>
+    <table border="1">
+        <tbody>
+            <tr>
+                <th>Data Set</th>
+                <td>{{ meta_data.data_set }}</td>
+            </tr>
+            <tr>
+                <th>Version</th>
+                <td>{{ meta_data.version }}</td>
+            </tr>
+            <tr>
+                <th>Media URL</th>
+                <td>{{ meta_data.media_url }}</td>
+            </tr>
+            <tr>
+                <th>Created Date</th>
+                <td>{{ meta_data.cre_dt }}</td>
+            </tr>
+            <tr>
+                <th>ADO Result</th>
+                <td>{{ meta_data.ado_result }}</td>
+            </tr>
+            <tr>
+                <th>Bit Depth</th>
+                <td>{{ meta_data.bit_dep }}</td>
+            </tr>
+            <tr>
+                <th>Sample Rate</th>
+                <td>{{ meta_data.sam_rte }}</td>
+            </tr>
+            <tr>
+                <th>Recording Start Time</th>
+                <td>{{ meta_data.rec_strime }}</td>
+            </tr>
+            <tr>
+                <th>TDMS Flag</th>
+                <td>{{ meta_data.tdms_flag }}</td>
+            </tr>
+            <tr>
+                <th>File Path</th>
+                <td>{{ meta_data.file_path }}</td>
+            </tr>
+            <tr>
+                <th>DAQ Sample Rate</th>
+                <td>{{ meta_data.daq_sam_rte }}</td>
+            </tr>
+            <tr>
+                <th>X Pixel</th>
+                <td>{{ meta_data.x_pixel }}</td>
+            </tr>
+            <tr>
+                <th>Y Pixel</th>
+                <td>{{ meta_data.y_pixel }}</td>
+            </tr>
+            <tr>
+                <th>IP Camera X Slope</th>
+                <td>{{ meta_data.ip_cam_x_slop }}</td>
+            </tr>
+            <tr>
+                <th>IP Camera Y Slope</th>
+                <td>{{ meta_data.ip_cam_y_slop }}</td>
+            </tr>
+            <tr>
+                <th>Beam Width</th>
+                <td>{{ meta_data.beam_wid }}</td>
+            </tr>
+            <tr>
+                <th>Beam Height</th>
+                <td>{{ meta_data.beam_hei }}</td>
+            </tr>
+            <tr>
+                <th>LP Data</th>
+                <td>{{ meta_data.lp_data }}</td>
+            </tr>
+            <tr>
+                <th>LP Data Index</th>
+                <td>{{ meta_data.lp_data_idx }}</td>
+            </tr>
+            <tr>
+                <th>LP Data Length</th>
+                <td>{{ meta_data.lp_data_len }}</td>
+            </tr>
+            <tr>
+                <th>LP Data File Path</th>
+                <td>{{ meta_data.lp_data_file_path }}</td>
+            </tr>
+            <tr>
+                <th>Image Data</th>
+                <td>{{ meta_data.img_data }}</td>
+            </tr>
+            <tr>
+                <th>Image Index</th>
+                <td>{{ meta_data.img_idx }}</td>
+            </tr>
+            <tr>
+                <th>Image File Path</th>
+                <td>{{ meta_data.img_file_path }}</td>
+            </tr>
+            <tr>
+                <th>Beam Power</th>
+                <td>{{ meta_data.beam_pwr }}</td>
+            </tr>
+            <tr>
+                <th>Beam Power Index</th>
+                <td>{{ meta_data.beam_pwr_idx }}</td>
+            </tr>
+            <tr>
+                <th>Beam Power Path</th>
+                <td>{{ meta_data.beam_pwr_path }}</td>
+            </tr>
+            <tr>
+                <th>Image Video Path</th>
+                <td>{{ meta_data.img_video_path }}</td>
+            </tr>
+            <tr>
+                <th>Beam Video Path</th>
+                <td>{{ meta_data.beam_video_path }}</td>
+            </tr>
+            <tr>
+                <th>Video Path</th>
+                <td>{{ meta_data.video_path }}</td>
+            </tr>
+            <tr>
+                <th>Registered User</th>
+                <td>{{ meta_data.reg_user }}</td>
+            </tr>
+            <tr>
+                <th>Registered Date</th>
+                <td>{{ meta_data.reg_dt }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <a href="{% url 'meta_update_page' meta_data.data_set_idx %}" class="btn">메타데이터 수정</a>
+    <a href="{% url 'meta_delete' meta_data.data_set_idx %}" class="btn">메타데이터 삭제</a>
+    <a href="{% url 'meta_list' %}" class="btn">메타데이터 리스트</a>
+    <a href="{% url 'meta_intro' %}" class="btn">메타데이터 인트로</a>
+    
+    <a href="{% url 'noise_list' meta_data.data_set_idx %}" class="btn_noise">배경소음 리스트</a>
+    <a href="{% url 'noise_insert_page' meta_data.data_set_idx %}" class="btn_noise">배경소음 입력</a>
+
+    <a href="{% url 'sound_detail_list' meta_data.data_set_idx %}" class="btn_detail">상세소리 메타데이터 리스트</a>
+    <a href="{% url 'sound_detail_insert_page' meta_data.data_set_idx %}" class="btn_detail">상세소리 메타데이터 입력</a>
+    
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang='ko'>
+
+    <head>
+        <link href='{% static "css/datatables.min.css" %}' rel='stylesheet'>
+        <script src='{% static "js/jquery.min.js" %}'></script>
+        <script src='{% static "js/datatables.min.js" %}'></script>
+        <script src='{% static "js/jquery.cookie.min.js" %}'></script>
+        <script src='{% static "js/moment.js" %}'></script>
+    </head>
+
+    <body>
+        {% include 'header.html' %}
+
+        {% block contents %}{% endblock %}
+
+        {% include 'footer.html' %}
+
+        {% block script %}{% endblock %}
+    </body>
+
+</html>

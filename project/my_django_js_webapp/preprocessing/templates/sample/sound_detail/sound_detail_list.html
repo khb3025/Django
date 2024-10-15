@@ -1,0 +1,170 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sound Detail List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px; /* 여백 추가 */
+        }
+        .btn_noise{
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #FFA500;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px; /* 여백 추가 */
+        }
+        .btn_detail{
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #008000;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px; /* 여백 추가 */
+        }
+        .btn-submit {
+            background-color: #28a745; /* 제출 버튼 색상 */
+        }
+
+    </style>
+    <script src="{% static 'preprocessing/js/jquery-3.7.1.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            $("a[name='sound_detail_delete']").on("click",function(){
+                let r_data = {};
+                r_data['snd_set_idx'] = $(this).closest('tr').find("input[name='snd_set_idx']").val();
+                r_data['data_set_idx'] = $(this).closest('tr').find("input[name='data_set_idx']").val();
+                
+                $.ajax({
+                    url : "{% url 'sound_detail_delete' %}",
+                    type : "POST",
+                    data : JSON.stringify(r_data),
+                    contentType: "application/json",
+                    beforeSend: function(xhr) {
+                        // CSRF 토큰을 헤더에 추가
+                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    },
+                    success : function(response){
+                        alert(response["msg"]);
+                        location.reload();
+                    },
+                    error : function(response){
+                        if(typeof response.responseJSON != "undefined"){
+                            alert(response.responseJSON.msg)
+                            location.reload();
+                        }
+                    }
+    
+                });
+            });
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+    </script>
+</head>
+<body>
+    <h1>Sound Detail List</h1>
+    <ul>
+        <table>
+            <thead>
+                <tr>
+                    <th>데이터 셋</th>
+                    <th>소리 상세정보 값</th>
+                    <th>소리 카테고리</th>
+                    <th>소리 서브카테고리</th>
+                    <th>소리 상세내용</th>
+
+                    <th>소리 녹취 장소</th>
+                    <th>소리 최대 dB</th>
+                    <th>소리 LUFS</th>
+                    <th>소리 시작 시간</th>
+                    <th>소리 종료 시간</th>
+                    
+                    <th>소리 시간</th>
+                    <th>소리 녹취장비</th>
+                    <th>소리 위급 수준</th>
+                    <th>보기</th>
+                    <th>수정</th>
+                    <th>삭제</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s_detail in s_detail_list %}
+                <tr>
+                    <input type="hidden" name="snd_set_idx" value="{{ s_detail.snd_set_idx }}"/>
+                    <input type="hidden" name="data_set_idx" value="{{ s_detail.data_set_idx }}"/>
+                    <td>{{ s_detail.data_set_idx.data_set_idx }}</td>
+                    <td>{{ s_detail.snd_info }}</td>
+                    <td>{{ s_detail.snd_cate }}</td>
+                    <td>{{ s_detail.snd_sub_cate }}</td>
+                    <td>{{ s_detail.snd_cmnt }}</td>
+
+                    <td>{{ s_detail.snd_place }}</td>
+                    <td>{{ s_detail.snd_ni_db }}</td>
+                    <td>{{ s_detail.snd_ni_luf }}</td>
+                    <td>{{ s_detail.snd_srt_time }}</td>
+                    <td>{{ s_detail.snd_end_time }}</td>
+
+                    <td>{{ s_detail.snd_len }}</td>
+                    <td>{{ s_detail.snd_device }}</td>
+                    <td>{{ s_detail.snd_danger }}</td>
+
+                    <td><a href="{% url 'sound_detail' meta_data_idx %}?snd_set_idx={{ s_detail.snd_set_idx }}" >보기</a></td>
+                    <td><a href="{% url 'sound_detail_update_page' meta_data_idx %}?snd_set_idx={{ s_detail.snd_set_idx }}">수정</a></td>
+                    <td><a name="sound_detail_delete" href="javascript:void(0);">삭제</a></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="16">No data available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <a href="{% url 'meta_detail' meta_data_idx %}" class="btn">메타데이터 상세</a>
+        <a href="{% url 'meta_list' %}" class="btn">메타데이터 리스트</a>
+        <a href="{% url 'meta_intro' %}" class="btn">메타데이터 인트로 화면</a>
+        
+        <a href="{% url 'sound_detail_insert_page' meta_data_idx %}" class="btn_noise">소리 입력</a>
+        
+    </ul>
+</body>
+</html>
+

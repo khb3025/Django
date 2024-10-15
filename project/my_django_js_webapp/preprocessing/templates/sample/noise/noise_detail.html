@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Noise Detail Page</title>
+    <style>
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px; /* 여백 추가 */
+        }
+        .btn-submit {
+            background-color: #28a745; /* 제출 버튼 색상 */
+        }
+    </style>
+    <script src="{% static 'preprocessing/js/jquery-3.7.1.min.js' %}"></script>
+    
+    <script>
+        
+
+        function form_to_json(formNode){
+            let jsonData = {}
+            let formData = formNode.serializeArray();
+            $.each(formData, function() {
+                jsonData[this.name] = this.value;
+            });
+            return jsonData
+        }
+
+    </script>
+</head>
+<body>
+    <h1>Noise Detail Page</h1>
+    <form id="noise_insert">
+        {% csrf_token %}
+        <input type="hidden" name="ni_set_idx" value="{{ noise_obj.ni_set_idx }}"/>
+        <table border="1">
+            <tbody>
+                <tr>
+                    <th>데이터셋</th>
+                    <td>{{ noise_obj.data_set_idx.data_set_idx }}</td>
+                </tr>
+                <tr>
+                    <th>배경소리 정보</th>
+                    <td>{{ noise_obj.ni_info }}</td>
+                </tr>
+                <tr>
+                    <th>배경소리 카테고리</th>
+                    <td>{{ noise_obj.ni_bg_cate }}</td>
+                </tr>
+                <tr>
+                    <th>배경소리 서브카테고리</th>
+                    <td>{{ noise_obj.ni_bg_sub_cate }}</td>
+                </tr>
+                <tr>
+                    <th>배경소리 수집장소</th>
+                    <td>{{ noise_obj.ni_place }}</td>
+                </tr>
+                <tr>
+                    <th>배경소리 최대 dB</th>
+                    <td>{{ noise_obj.ni_bg_sdb }}</td>
+                </tr>
+                <tr>
+                    <th>배경소리 LUFS</th>
+                    <td>{{ noise_obj.ni_bg_luf }}</td>
+                </tr>
+                <tr>
+                    <th>배경소리 녹취 장비</th>
+                    <td>{{ noise_obj.ni_device }}</td>
+                </tr>
+                <tr>
+                    <th>배경소리 시간</th>
+                    <td>{{ noise_obj.ni_len }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <a href="{% url 'noise_list' noise_obj.data_set_idx.data_set_idx %}" class="btn">배경소리 리스트</a>
+        <a href="{% url 'noise_update_page' noise_obj.ni_set_idx %}?data_set_idx={{ noise_obj.data_set_idx.data_set_idx }}" class="btn">수정</a>
+        <a href="{% url 'noise_delete' noise_obj.ni_set_idx %}?data_set_idx={{ noise_obj.data_set_idx.data_set_idx }}" class="btn">삭제</a>
+    </form>
+</body>
+</html>
