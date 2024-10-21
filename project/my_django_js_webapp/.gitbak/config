@@ -12,3 +12,4 @@
 [branch "hb"]
 	remote = origin
 	merge = refs/heads/hb
+	vscode-merge-base = origin/main

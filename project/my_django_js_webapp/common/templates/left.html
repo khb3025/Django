@@ -1,0 +1,62 @@
+{% load static %}
+
+<!-- start: sidebar -->
+<aside id="sidebar-left" class="sidebar-left">
+
+    <div class="sidebar-header">
+        <div class="sidebar-title">
+            <a href="#none" class="logo"> <img src= '{% static  "assets/images/kisti.png" %}'class="logo_gnb">
+            </a>
+        </div>
+        <div class="sidebar-toggle">
+            <a href="#none"> <img src='{% static  "assets/images/kisti.png" %}' class="logo_symbol_gnb">
+            </a>
+        </div>
+        <div class="sidebar-toggle" onclick="onoff_click()" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+            <i aria-label="Toggle sidebar"><img src='{% static  "assets/images/ico_hide.png" %}' class="ico_hide1"><img src='{% static  "assets/images/ico_open.png" %}' class="ico_hide2"></i>
+        </div>
+    </div>
+
+    <div class="nano">
+        <div class="nano-content">
+            <nav id="menu" class="nav-main nano-pt20" role="navigation">
+
+    <ul class="nav nav-main">
+        <li class="nav-parent nav-expanded">
+    <a href="/common/sample/" class="small_tag"> <i class="nav-active-menu"></i> <img src='{% static  "assets/images/ico_menu01.svg" %}' class="ico_menu">
+        <i class="small_text active-text">sample page</i></a>
+    </li>
+        <li class="nav-parent"><a href="#none" class="small_tag"> <img src='{% static  "assets/images/ico_menu02.svg" %}' class="ico_menu"><i class="small_text">수집</i>
+                    </a>
+                        <ul class="nav nav-children">
+                            <li><a href="#none"> 소메뉴 2-1 </a></li>
+                            <li><a href="#none"> 소메뉴 2-1 </a></li>
+                        </ul></li>
+    <li class="nav-parent"><a href="#none" class="small_tag"> <img src='{% static  "assets/images/ico_menu03.svg" %}' class="ico_menu"><i class="small_text">전처리</i>
+                    </a>
+                        <ul class="nav nav-children">
+                            <li><a href="#none"> 소메뉴 3-1 </a></li>
+                            <li><a href="#none"> 소메뉴 3-2 </a></li>
+                            <li><a href="#none"> 소메뉴 3-3 </a></li>
+                        </ul></li>
+    <li class="nav-parent"><a href="#none" class="small_tag"> <img src='{% static  "assets/images/ico_menu04.svg" %}' class="ico_menu"><i class="small_text">평가셋 설정</i>
+                    </a>
+                        <ul class="nav nav-children">
+                            <li><a href="#none"> 소메뉴 4-1 </a></li>
+                            <li><a href="#none"> 소메뉴 4-2 </a></li>
+                        </ul></li>
+    <li class="nav-parent"><a href="#none" class="small_tag"> <img src='{% static  "assets/images/ico_menu05.svg" %}' class="ico_menu"><i class="small_text">평가 목록</i>
+                    </a>
+                        <ul class="nav nav-children">
+                            <li><a href="#none"> 소메뉴 5-1 </a></li>
+                            <li><a href="#none"> 소메뉴 5-2 </a></li>
+                        </ul></li>
+         </ul>
+            </nav>
+
+
+        </div>
+    </div>
+
+</aside>
+<!-- end: sidebar -->

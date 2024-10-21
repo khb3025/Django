@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import datetime, xlsxwriter, uuid, logging, traceback
 from django.conf import settings
 from sound.models import Metadata
@@ -11,8 +11,14 @@ log = logging.getLogger(__name__)
 
 
 def index(request):
-    return render(request, 'sample.html')
+    return redirect('/api/login_view')
 
+def go_main(request):
+    return render(request, 'main.html')
+
+
+def sample_page(request):
+    return render(request, 'sample.html')
 
 def sample_excel_download(request):
 

@@ -1,0 +1,772 @@
+{% extends 'main_base.html' %}
+{% load static %}
+{% block script %}
+<!-- Vendor -->
+        <script>
+                // Maintain Scroll Position
+                if (typeof localStorage !== 'undefined') {
+                        if (localStorage.getItem('sidebar-left-position') !== null) {
+                                var initialPosition = localStorage.getItem('sidebar-left-position'), sidebarLeft = document.querySelector('#sidebar-left .nano-content');
+
+                                sidebarLeft.scrollTop = initialPosition;
+                        }
+                }
+
+                var lang_kor = {
+                        /*
+                        select : {
+                            rows : {
+                                _ : " %d rows selected",
+                                1 : "1 row selected"
+                            }
+                        },
+                         */
+                        select : {
+                                rows : ""
+                        },
+                        decimal : "",
+                        emptyTable : "데이터가 없습니다.",
+                        //info : "_START_ - _END_ (총 _TOTAL_ 명)",
+                        info : "_TOTAL_",
+                        infoEmpty : "0명",
+                        infoFiltered : "(전체 _MAX_ 명 중 검색결과)",
+                        infoPostFix : "",
+                        thousands : ",",
+                        lengthMenu : "_MENU_",
+                        loadingRecords : "로딩중...",
+                        processing : "처리중...",
+                        search : "검색 : ",
+                        zeroRecords : "검색된 데이터가 없습니다.",
+                        paginate : {
+			            "first" : "첫 페이지",
+                                "last" : "마지막 페이지",
+                                "next" : "다음",
+                                "previous" : "이전"
+                        },
+                        aria : {
+                                "sortAscending" : " :  오름차순 정렬",
+                                "sortDescending" : " :  내림차순 정렬"
+                        }
+                }
+
+                $(function() {
+                        $('#datatable-default').DataTable({
+                                dom : "<'col-sm-2'i><'col-sm-10 pr0'Bl>frtp",
+                                searching : false,
+                                lengthMenu: [[10, 25, 50, -1], ["10개씩 보기", "20개씩 보기", "50개씩 보기", "All"]],
+                                buttons : [{
+                                        text : "삭제",
+                                        className : "datatable-btn-normal",
+                                        action : function(e, dt, node, config) {
+                                                console.log(e);
+                                                console.log(dt);
+                                                console.log(node);
+                                                console.log(config);
+                                        }
+                                }, {
+                                        text : "엑셀다운",
+                                        className : "datatable-btn-excel",
+                                        action : function(e, dt, node, config) {
+                                                console.log(e);
+                                                console.log(dt);
+                                                console.log(node);
+                                                console.log(config);
+                                        }
+                                }, {
+                                        text : "기존원천데이터",
+                                        className : "modal-with-form datatable-btn-normal wi150",
+                            action: function (e, dt, node, config, cb) {
+
+                                $.magnificPopup.open({
+                                    items: {
+                                        src: $('#modalForm2').html()
+                                    },
+                                                        mainClass: 'modal-block-lg'
+
+                                });
+
+                            }
+                                }, {
+                                        text : "추가하기",
+                                        className : "modal-with-form datatable-btn-confirm",
+                            action: function (e, dt, node, config, cb) {
+
+                                $.magnificPopup.open({
+                                    items: {
+                                        src: $('#modalForm1').html()
+                                    },
+                                                        mainClass: 'modal-block-md'
+
+                                });
+
+                            }
+                                }
+                                ],
+                                language : lang_kor
+                        });
+                })
+		 $(function() {
+                        $('#datatable-default2').DataTable({
+                                dom : "<'col-sm-2'i><'col-sm-10 pr0'Bl>frtp",
+                                searching : false,
+                                lengthMenu: [[10, 30, 50, -1], ["10개씩 보기", "30개씩 보기", "50개씩 보기", "All"]],
+                                buttons : [{
+                                        text : "엑셀다운",
+                                        className : "datatable-btn-excel",
+                                        action : function(e, dt, node, config) {
+                                                console.log(e);
+                                                console.log(dt);
+                                                console.log(node);
+                                                console.log(config);
+                                        }
+                                }, {
+                                        text : "데이터셋 생성",
+                                        className : "datatable-btn-confirm wi150",
+                                        action : function(e, dt, node, config) {
+                                                console.log(e);
+                                                console.log(dt);
+                                                console.log(node);
+                                                console.log(config);
+                                        }
+                                }
+                                ],
+                                language : lang_kor
+                        });
+                })
+
+        </script>
+{% endblock %}
+
+{% block contents %}
+<section class="body">
+
+			<div class="inner-wrapper">
+
+
+				<section role="main" class="content-body">
+	
+				<section class="panel main-panel mgt_70">
+					<table class="table top-table mb40">
+						<colgroup>
+							<col width="180px">
+							<col width="42%">
+							<col width="180px">
+							<col width="42%">
+						</colgroup>
+						<tbody>
+
+						</tbody>
+					</table>
+
+					<!--
+                                    버튼 동적 구성
+									<div class="excel-confirm">
+											<button type="button" class="datatable-btn-excel">
+                                                <img src='{% static  "assets/images/ico_excel.svg" %}' class="ico_excel">엑셀파일
+                                            </button>
+											<a class="modal-with-form datatable-btn-confirm" href="#modalForm">등록</a>
+									</div>
+-->
+
+					<!-- 관리자 등록 팝업 -->
+					<div id="modalForm" class="modal-block modal-block-primary mfp-hide">
+						<section class="panel">
+							<header class="panel-heading">
+								<h2 class="panel-title">관리자 등록</h2>
+								<img src='{% static  "assets/images/ico_delete.svg" %}' class="ico_delete modal-dismiss">
+							</header>
+							<div class="panel-body">
+								<table>
+									<tbody>
+										<tr>
+											<td class="d-flex">
+												<select id="company" class="form-control ht35 mr10 win3 pt4">
+													<option value="">본부</option>
+													<option value="111">111</option>
+													<option value="222">222</option>
+												</select> <select id="company" class="form-control ht35 mr10 win3 pt4">
+													<option value="">부서/팀</option>
+													<option value="111">111</option>
+													<option value="222">222</option>
+												</select> <select id="company" class="form-control ht35 win3 pt4">
+													<option value="">직급</option>
+													<option value="111">111</option>
+													<option value="222">222</option>
+												</select>
+											</td>
+											<td class="d-flex mgt_10">
+												<input type="text" id="search_text" name="search_text" class="form-control ht35 mr5" placeholder="본부/팀/이름/직급 검색">
+												<button type="button" class="search-btn" onclick="search()">검색</button>
+											</td>
+											<td class="d-flex mgt_10">
+												<ul class="member_list">
+													<li>본부_팀_이름_직급</li>
+													<li>본부_팀_이름_직급</li>
+													<li>본부_팀_이름_직급</li>
+													<li>본부_팀_이름_직급</li>
+													<li>본부_팀_이름_직급</li>
+													<li>본부_팀_이름_직급</li>
+													<li>본부_팀_이름_직급</li>
+													<li>본부_팀_이름_직급</li>
+													<li>본부_팀_이름_직급</li>
+													<li>본부_팀_이름_직급</li>
+													<li>본부_팀_이름_직급</li>
+													<li>본부_팀_이름_직급</li>
+												</ul>
+											</td>
+											<td class="d-flex mgt_10">
+												<div class="member_choice">
+													<div>
+														<span>이름:</span><span class="before-confirm">관리자로 등록할 직원을 선택하세요.</span>
+													</div>
+													<div class="mt-sm">
+														<span>권한:</span> <span> <select id="company" class="form-control ht35 wi150 pt4">
+																<option value="">일반관리자</option>
+																<option value="111">111</option>
+																<option value="222">222</option>
+														</select>
+														</span>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+
+
+							</div>
+							<footer class="panel-footer">
+								<div class="row">
+									<div class="col-md-12 text-center">
+										<button class="btn btn-modal-cancel modal-dismiss">취소</button>
+										<button class="btn btn-modal-confirm modal-confirm" disabled>등록</button>
+									</div>
+								</div>
+							</footer>
+						</section>
+					</div>
+
+
+
+
+					<table class="table table-bordered" id="datatable-default">
+
+						<thead>
+							<tr>
+								<th class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample20">
+										<label for="checkboxExample20"></label>
+									</div>
+								</th>
+								<th>idx</th>
+								<th>data</th>
+								<th>jobYmd</th>
+								<th>category</th>
+								<th>subCategory</th>
+								<th>path</th>
+								<th>col_type</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample21">
+										<label for="checkboxExample21"></label>
+									</div>
+								</td>
+								<td>99</td>
+								<td>04_01_2103_230726_0174</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>KISTI_DATA/원천데이터/공공장소데이터/01.플랫폼/01.엘레베이터</td>
+								<td>API-울산공장</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample22">
+										<label for="checkboxExample22"></label>
+									</div>
+								</td>
+								<td>99</td>
+								<td>04_01_2103_230726_0174</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>KISTI_DATA/원천데이터/공공장소데이터/01.플랫폼/01.엘레베이터</td>
+								<td>API-울산공장</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample23">
+										<label for="checkboxExample23"></label>
+									</div>
+								</td>
+								<td>99</td>
+								<td>04_01_2103_230726_0174</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>KISTI_DATA/원천데이터/공공장소데이터/01.플랫폼/01.엘레베이터</td>
+								<td>API-울산공장</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample24">
+										<label for="checkboxExample24"></label>
+									</div>
+								</td>
+								<td>99</td>
+								<td>04_01_2103_230726_0174</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>KISTI_DATA/원천데이터/공공장소데이터/01.플랫폼/01.엘레베이터</td>
+								<td>API-울산공장</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample25">
+										<label for="checkboxExample25"></label>
+									</div>
+								</td>
+								<td>99</td>
+								<td>04_01_2103_230726_0174</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>KISTI_DATA/원천데이터/공공장소데이터/01.플랫폼/01.엘레베이터</td>
+								<td>API-울산공장</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample26">
+										<label for="checkboxExample26"></label>
+									</div>
+								</td>
+								<td>99</td>
+								<td>04_01_2103_230726_0174</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>KISTI_DATA/원천데이터/공공장소데이터/01.플랫폼/01.엘레베이터</td>
+								<td>API-울산공장</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample27">
+										<label for="checkboxExample27"></label>
+									</div>
+								</td>
+								<td>99</td>
+								<td>04_01_2103_230726_0174</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>KISTI_DATA/원천데이터/공공장소데이터/01.플랫폼/01.엘레베이터</td>
+								<td>API-울산공장</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample28">
+										<label for="checkboxExample28"></label>
+									</div>
+								</td>
+								<td>99</td>
+								<td>04_01_2103_230726_0174</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>KISTI_DATA/원천데이터/공공장소데이터/01.플랫폼/01.엘레베이터</td>
+								<td>API-울산공장</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample29">
+										<label for="checkboxExample29"></label>
+									</div>
+								</td>
+								<td>99</td>
+								<td>04_01_2103_230726_0174</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>KISTI_DATA/원천데이터/공공장소데이터/01.플랫폼/01.엘레베이터</td>
+								<td>API-울산공장</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample30">
+										<label for="checkboxExample30"></label>
+									</div>
+								</td>
+								<td>99</td>
+								<td>04_01_2103_230726_0174</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>KISTI_DATA/원천데이터/공공장소데이터/01.플랫폼/01.엘레베이터</td>
+								<td>API-울산공장</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample31">
+										<label for="checkboxExample31"></label>
+									</div>
+								</td>
+								<td>99</td>
+								<td>04_01_2103_230726_0174</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>KISTI_DATA/원천데이터/공공장소데이터/01.플랫폼/01.엘레베이터</td>
+								<td>API-울산공장</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample32">
+										<label for="checkboxExample32"></label>
+									</div>
+								</td>
+								<td>99</td>
+								<td>04_01_2103_230726_0174</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>KISTI_DATA/원천데이터/공공장소데이터/01.플랫폼/01.엘레베이터</td>
+								<td>API-울산공장</td>
+							</tr>
+						</tbody>
+
+					</table>
+
+
+
+				</section>
+
+				<!-- end: page -->
+			</section>
+		</div>
+
+	</section>
+
+
+
+	<!-- 추가하기 팝업 -->
+	<div id="modalForm1" class="modal-block modal-block-xs mfp-hide">
+		<section class="panel">
+			<header class="panel-heading">
+				<h2 class="panel-title">개별 소리데이터 추가하기</h2>
+				<img src='{% static  "assets/images/ico_delete.svg" %}' class="ico_delete modal-dismiss">
+			</header>
+			<div class="panel-body">
+
+				<table class="table top-table">
+					<colgroup>
+							<col width="143px">
+							<col width="*">
+						</colgroup>
+					<tbody>
+						<tr>
+							<td>데이터 대분류</td>
+							<td>
+								<select class="form-control ht35">
+									<option value="">선택하세요</option>
+									<option value="111">111</option>
+									<option value="222">222</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>데이터 상세 분류</td>
+							<td>
+								<select class="form-control ht35">
+									<option value="">선택하세요</option>
+									<option value="111">111</option>
+									<option value="222">222</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>신규파일 업로드</td>
+							<td>
+								<div class="fileupload fileupload-new" data-provides="fileupload"><input type="hidden">
+									<div class="input-append">
+										<div class="uneditable-input">
+											<i class="fa fa-file fileupload-exists"></i>
+											<span class="fileupload-preview"></span>
+										</div>
+										<span class="btn btn-default btn-file">
+											<span class="fileupload-exists">다시 선택</span>
+											<span class="fileupload-new">파일 선택</span>
+											<input type="file">
+										</span>
+										<a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">삭제</a>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<footer class="panel-footer">
+				<div class="row">
+					<div class="col-md-12 text-center">
+						<button class="btn btn-modal-cancel modal-dismiss">취소</button>
+						<button class="btn btn-modal-confirm modal-confirm">저장</button>
+					</div>
+				</div>
+			</footer>
+		</section>
+	</div>
+
+
+
+	<!-- 원천데이터 팝업 -->
+	<div id="modalForm2" class="modal-block modal-block-xs mfp-hide">
+		<section class="panel">
+			<header class="panel-heading">
+				<h2 class="panel-title">기존 원천데이터 선택</h2>
+				<img src='{% static  "assets/images/ico_delete.svg" %}' class="ico_delete modal-dismiss">
+			</header>
+			<div class="panel-body">
+
+
+
+
+					<table class="table table-bordered" id="datatable-default2">
+
+						<thead>
+							<tr>
+								<th class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample37">
+										<label for="checkboxExample37"></label>
+									</div>
+								</th>
+								<th>파일명</th>
+								<th>데이터 등록일</th>
+								<th>대분류</th>
+								<th>상세분류</th>
+								<th>이상치 종류</th>
+								<th>파일 길이(sec)</th>
+								<th>소리 최대(db)</th>
+								<th>상태</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample38">
+										<label for="checkboxExample38"></label>
+									</div>
+								</td>
+								<td>sample0.wav</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>파일 길이 짧음</td>
+								<td>15</td>
+								<td>15</td>
+								<td>정상</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample39">
+										<label for="checkboxExample39"></label>
+									</div>
+								</td>
+								<td>sample0.wav</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>파일 길이 짧음</td>
+								<td>15</td>
+								<td>15</td>
+								<td>정상</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample40">
+										<label for="checkboxExample40"></label>
+									</div>
+								</td>
+								<td>sample0.wav</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>파일 길이 짧음</td>
+								<td>15</td>
+								<td>15</td>
+								<td>정상</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample41">
+										<label for="checkboxExample41"></label>
+									</div>
+								</td>
+								<td>sample0.wav</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>파일 길이 짧음</td>
+								<td>15</td>
+								<td>15</td>
+								<td>정상</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample42">
+										<label for="checkboxExample42"></label>
+									</div>
+								</td>
+								<td>sample0.wav</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>파일 길이 짧음</td>
+								<td>15</td>
+								<td>15</td>
+								<td>정상</td>
+							</tr>
+
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample43">
+										<label for="checkboxExample43"></label>
+									</div>
+								</td>
+								<td>sample0.wav</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>파일 길이 짧음</td>
+								<td>15</td>
+								<td>15</td>
+								<td>정상</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample44">
+										<label for="checkboxExample44"></label>
+									</div>
+								</td>
+								<td>sample0.wav</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>파일 길이 짧음</td>
+								<td>15</td>
+								<td>15</td>
+								<td>정상</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample45">
+										<label for="checkboxExample45"></label>
+									</div>
+								</td>
+								<td>sample0.wav</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>파일 길이 짧음</td>
+								<td>15</td>
+								<td>15</td>
+								<td>정상</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample46">
+										<label for="checkboxExample46"></label>
+									</div>
+								</td>
+								<td>sample0.wav</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>파일 길이 짧음</td>
+								<td>15</td>
+								<td>15</td>
+								<td>정상</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample47">
+										<label for="checkboxExample47"></label>
+									</div>
+								</td>
+								<td>sample0.wav</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>파일 길이 짧음</td>
+								<td>15</td>
+								<td>15</td>
+								<td>정상</td>
+							</tr>
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample48">
+										<label for="checkboxExample48"></label>
+									</div>
+								</td>
+								<td>sample0.wav</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>파일 길이 짧음</td>
+								<td>15</td>
+								<td>15</td>
+								<td>정상</td>
+							</tr>
+
+							<tr>
+								<td class="checkbox-col">
+									<div class="checkbox-custom checkbox-warning">
+										<input type="checkbox" id="checkboxExample49">
+										<label for="checkboxExample49"></label>
+									</div>
+								</td>
+								<td>sample0.wav</td>
+								<td>2024-10-04 09:26:34</td>
+								<td>사물소리</td>
+								<td>파손소리</td>
+								<td>파일 길이 짧음</td>
+								<td>15</td>
+								<td>15</td>
+								<td>정상</td>
+							</tr>
+						</tbody>
+
+					</table>
+
+			</div>
+		</section>
+	</div>
+{% endblock %}

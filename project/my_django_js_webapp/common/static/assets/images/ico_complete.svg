@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+    <g style="stroke:#263238;fill:none">
+        <rect width="20" height="20" rx="10" style="stroke:none"/>
+        <rect x=".5" y=".5" width="19" height="19" rx="9.5" style="fill:none"/>
+    </g>
+    <path data-name="패스 1714" d="m-19668.365-22182.562 2.6 2.773 4.742-5.066" transform="translate(19674.695 22192.32)" style="stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;stroke:#263238;fill:none"/>
+</svg>

@@ -42,12 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework', # 추가
     'common',
-    'boards', # 추가
     'sound', # 추가
     'evaluation_set',
     'preprocessing',
     'rawsound', # 추가
     'file_upload_examples',
+    'users',
 ]
 
 
@@ -115,6 +115,9 @@ DATABASES = {
         'PORT' : '3336'
     }
 }
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

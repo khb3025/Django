@@ -1,6 +1,12 @@
-{% extends 'main_base.html' %}
-{% load static %}
 
+<html>
+
+{% load static %}
+<script src='{% static "js/jquery.min.js" %}'></script>
+        <script src='{% static "js/datatables.min.js" %}'></script>
+        <script src='{% static "js/jquery.cookie.min.js" %}'></script>
+        <script src='{% static "js/moment.js" %}'></script>
+<link href='{% static "css/datatables.min.css" %}' rel='stylesheet'>
 {% block script %}
     <script>
         $(document).ready(function(){
@@ -51,3 +57,5 @@
 
     <button onclick="sample_download()">excel_download</button>
 {% endblock %}
+
+</html>
