@@ -15,7 +15,11 @@ urlpatterns = [
     path('get_preprocessing_list/', get_preprocessing_list, name='get_preprocessing_list'),
     path('preprocessing/', preprocessing, name='preprocessing'),
     path('preprocessing_delete/', preprocessing_delete, name='preprocessing_delete'),
+    path('get_origin_source_list/', get_origin_source_list, name='get_origin_source_list'),
+    path('confirm_library_active/', confirm_library_active, name='confirm_library_active'),
     
+    #waveSurfer Audio
+    path('show_audio_wave/', show_audio_wave, name='show_audio_wave'),
     
     # TEST
     path('meta_intro/', meta_intro, name='meta_intro'),
